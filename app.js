@@ -74,6 +74,11 @@ document.addEventListener("DOMContentLoaded", () => {
         play("final.mp3");
         break;
     }
+     case "mute":
+        updateBig("🔚 APRESENTAÇÃO ENCERRADA");
+        play("mute.mp3");
+        break;
+    }
   }
 
   // ===== UI helpers =====
@@ -146,4 +151,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ===== Painel legado (botões antigos ainda funcionam) =====
 function sendCommand(cmd){ db.ref("command").set(cmd); }
+
 
