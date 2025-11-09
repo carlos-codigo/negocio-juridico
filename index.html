@@ -25,6 +25,33 @@
 
   <!-- Áudio geral da apresentação -->
   <audio id="sound" preload="auto"></audio>
+<script>
+  (function(){
+    const secret = document.getElementById("secretAccess");
+    let pressTimer = null;
+
+    function startPress(e){
+      e.preventDefault && e.preventDefault();
+      if (pressTimer === null) {
+        pressTimer = setTimeout(()=> {
+          window.location.href = "login.html";
+        }, 1500); // 1.5s para acionar
+      }
+    }
+    function cancelPress(e){
+      if (pressTimer !== null) {
+        clearTimeout(pressTimer);
+        pressTimer = null;
+      }
+    }
+
+    secret.addEventListener("touchstart", startPress, {passive:false});
+    secret.addEventListener("mousedown", startPress);
+    secret.addEventListener("touchend", cancelPress);
+    secret.addEventListener("mouseup", cancelPress);
+    secret.addEventListener("mouseleave", cancelPress);
+  })();
+</script>
 
   <!-- Acesso secreto ao painel (3 cliques no ícone ⚖️) -->
   <script>
@@ -77,4 +104,5 @@
 
 </body>
 </html>
+
 
