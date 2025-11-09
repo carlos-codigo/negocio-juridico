@@ -1,35 +1,175 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Painel de Controle — Negócio Jurídico</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Bloqueio por senha -->
   <script>
-  if (localStorage.getItem("auth") !== "ok") {
-    window.location.href = "login.html";
-  }
-</script>
+    if (localStorage.getItem("auth") !== "ok") {
+      window.location.href = "login.html";
+    }
+  </script>
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Painel de Controle</title>
-  <link rel="stylesheet" href="style.css">
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script src="firebase.js"></script>
 
-  <script defer src="firebase.js"></script>
-  <script defer src="app.js"></script>
+  <style>
+    body.painel{ padding:24px; color:#e5e5e5; font-family: Poppins, system-ui, sans-serif }
+    h2{ margin-bottom:16px }
+    .grid{ display:grid; gap:12px }
+    .row{ display:flex; flex-wrap:wrap; gap:10px; align-items:center }
+    .card{ background:#0f172a; border:1px solid #1f2a44; padding:12px; border-radius:12px; box-shadow:0 10px 24px rgba(0,0,0,.35) }
+    button{
+      background:#d4af37; color:#000; border:none; border-radius:10px; padding:10px 14px;
+      font-weight:700; cursor:pointer; transition:.18s; box-shadow:0 6px 16px rgba(0,0,0,.35)
+    }
+    button:hover{ transform:translateY(-1px) }
+    button:active{ transform:translateY(0) }
+    .danger{ background:#ef4444; color:#fff }
+    .ok{ background:#22c55e; color:#001308 }
+    .muted{ background:#222; color:#bbb }
+    .warn{ background:#eab308; color:#000 }
+    .dark{ background:#111; color:#ddd }
+    .wide button{ min-width:140px }
+    .tiny{ font-size:13px; padding:8px 10px }
+    .tag{ font-size:12px; opacity:.8 }
+  </style>
 </head>
 <body class="painel">
+  <h2>Painel — Apresentador</h2>
 
-  <h2>Painel de Controle — Apresentador</h2>
+  <div class="grid">
 
-  <button onclick="sendCommand('start')">🔊 Iniciar Apresentação</button>
-  <button onclick="sendCommand('valid')">✅ Negócio Jurídico Válido</button>
-  <button onclick="sendCommand('invalid')">❌ Negócio Jurídico Inválido</button>
-  <button onclick="sendCommand('assinatura')">🖊 Assinatura do Contrato</button>
-  <button onclick="sendCommand('vicio')">⚠ Vício de Vontade</button>
-  <button onclick="sendCommand('encerrar')">🔚 Encerrar</button>
-  <button onclick="sendCommand('reset')">🔄 Voltar ao modo de espera</button>
-<button onclick="sendCommand('inicio')">inicio</button>
+    <div class="card row">
+      <button onclick="sendSimple('start')">▶️ Iniciar</button>
+      <button class="muted" onclick="sendSimple('reset')">🔄 Reset Tela</button>
+      <button class="dark" onclick="sendSimple('encerrar')">⏹ Encerrar Sessão</button>
+      <span class="tag">Dica: use Reset entre um caso e outro.</span>
+    </div>
 
+    <div class="card">
+      <div class="row wide" id="examplesRow"></div>
+      <div class="row" style="margin-top:8px">
+        <button class="ok" onclick="sendSimple('valid')">✅ LÍCITO</button>
+        <button class="danger" onclick="sendSimple('invalid')">❌ ILÍCITO</button>
+        <button class="warn" onclick="sendSimple('vicio')">⚠ Vício de vontade</button>
+        <button onclick="sendSimple('assinatura')">🖊 Assinatura</button>
+        <button class="dark" onclick="sendInfo('hint')">❓ Mostrar Dica</button>
+        <button class="dark" onclick="sendInfo('law')">📜 Fundamento Legal</button>
+        <button class="muted" onclick="sendSimple('suspense')">🎭 Suspense</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <strong>Controle atual:</strong>
+      <div id="status" class="tag">—</div>
+    </div>
+
+  </div>
+
+  <script>
+    // ====== Casos (texto completo), Dica curta e Fundamento legal ======
+    const CASES = [
+      null,
+      {
+        title: "Caso 1",
+        text: "Uma pessoa de 17 anos, emancipada, vende uma moto em seu nome.",
+        hint: "Pense na capacidade civil conferida pela emancipação.",
+        law: "CC, arts. 5º, par. único; 166 I."
+      },
+      {
+        title: "Caso 2",
+        text: "Contrato para vender um terreno que ainda será construído, com descrição clara do que será entregue.",
+        hint: "Objeto futuro pode ser válido se determinado e possível.",
+        law: "CC, arts. 104 II; 482; 483."
+      },
+      {
+        title: "Caso 3",
+        text: "Compra e venda de imóvel feita apenas de forma verbal, sem documento.",
+        hint: "Imóvel exige forma escrita/registro para plena eficácia.",
+        law: "CC, arts. 108; 481; 1.227."
+      },
+      {
+        title: "Caso 4",
+        text: "Venda de carro financiado sem informar o comprador sobre o ônus.",
+        hint: "Transparência e boa-fé; ônus real importa.",
+        law: "CC, arts. 113; 422; 447."
+      },
+      {
+        title: "Caso 5",
+        text: "Pagar um relógio caro com prestação de serviços (jardinagem), com consentimento de ambas as partes.",
+        hint: "Dação em pagamento/obrigação alternativa podem ser válidas.",
+        law: "CC, arts. 356; 104 II."
+      },
+      {
+        title: "Caso 6",
+        text: "Contrato de aluguel por 15 anos assinado por pessoa judicialmente incapaz.",
+        hint: "Capacidade do agente é requisito essencial.",
+        law: "CC, arts. 3º; 4º; 166 I; 171 I."
+      },
+      {
+        title: "Caso 7",
+        text: "Compra e venda escrita que omite descrição essencial do bem (objeto indeterminado).",
+        hint: "Objeto deve ser determinado/determinável.",
+        law: "CC, arts. 104 II; 233; 482."
+      },
+      {
+        title: "Caso 8",
+        text: "Acordo para compra de produto cuja venda é proibida por lei.",
+        hint: "Objeto ilícito torna o negócio nulo.",
+        law: "CC, arts. 104 II; 166 II."
+      },
+      {
+        title: "Caso 9",
+        text: "Maior de idade, mas comprovadamente incapaz no momento do ato, assina contrato.",
+        hint: "Capacidade de fato no momento do ato importa.",
+        law: "CC, arts. 4º; 166 I; 171 I."
+      },
+      {
+        title: "Caso 10",
+        text: "Promessa de compra e venda de imóvel com cláusulas claras, pagamento parcelado e previsão de registro futuro.",
+        hint: "Contrato-preliminar pode ser válido se certo e determinado.",
+        law: "CC, arts. 462; 463; 108."
+      }
+    ];
+
+    // Renderiza botões Exemplo 1..10
+    const exRow = document.getElementById('examplesRow');
+    for (let i=1;i<=10;i++){
+      const b = document.createElement('button');
+      b.textContent = `Exemplo ${i}`;
+      b.onclick = () => sendCase(i);
+      exRow.appendChild(b);
+    }
+
+    // ====== Firebase helpers ======
+    const dbRef = firebase.database().ref('command');
+    const statusEl = document.getElementById('status');
+
+    function send(obj){
+      dbRef.set(obj);
+      statusEl.textContent = `Enviado: ${JSON.stringify(obj)}`;
+    }
+    function sendSimple(cmd){
+      send({ cmd });
+    }
+    let current = 0;
+    function sendCase(n){
+      current = n;
+      const c = CASES[n];
+      send({ cmd:'case', id:n, title:c.title, text:c.text });
+    }
+    function sendInfo(kind){
+      if (!current){ alert('Selecione um Exemplo primeiro.'); return; }
+      const c = CASES[current];
+      if (kind === 'hint') send({ cmd:'hint', id:current, text:c.hint });
+      if (kind === 'law')  send({ cmd:'law',  id:current, text:c.law  });
+    }
+  </script>
 </body>
 </html>
-
