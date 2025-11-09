@@ -3,21 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Acesso Restrito</title>
+  <title>Negócio Jurídico Interativo</title>
   <link rel="stylesheet" href="style.css">
-  <script defer src="login.js"></script>
+
+  <!-- Firebase CDN -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+  <!-- Scripts do projeto -->
+  <script src="firebase.js"></script>
+  <script src="app.js"></script>
 </head>
-<body class="login">
+<body>
 
-  <div class="login-box">
-    <h1>🔐 Acesso ao Painel</h1>
-    <p>Digite a senha para continuar</p>
-
-    <input type="password" id="senha" placeholder="Senha" autofocus>
-    <button onclick="login()">Entrar</button>
-
-    <p id="erro" class="erro"></p>
+  <div id="screen" class="waiting">
+    <div class="content">
+      <h1 id="secretAccess">⚖ NEGÓCIO JURÍDICO INTERATIVO</h1>
+      <p class="pulse">Aguardando o apresentador iniciar...</p>
+    </div>
   </div>
+
+  <!-- Áudio geral da apresentação -->
+  <audio id="sound" preload="auto"></audio>
+
+  <!-- Acesso secreto ao painel (3 cliques no ícone ⚖️) -->
+  <script>
+    let clicks = 0;
+    const secret = document.getElementById("secretAccess");
+
+    secret.addEventListener("click", () => {
+      clicks++;
+      if (clicks === 3) {
+        window.location.href = "login.html";
+      }
+      setTimeout(() => clicks = 0, 800);
+    });
+  </script>
 
 </body>
 </html>
