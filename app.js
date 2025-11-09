@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       case "assinatura":
         showOverlay("🖊 Assinatura", "Formalização do negócio jurídico.", 2500);
-        play("assinatura.mp3");
+        play("mudo.mp3");
         break;
 
       case "vicio":
@@ -151,6 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ===== Painel legado (botões antigos ainda funcionam) =====
 function sendCommand(cmd){ db.ref("command").set(cmd); }
+
 
 
 
