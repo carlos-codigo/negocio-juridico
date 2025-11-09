@@ -117,4 +117,19 @@ body.login {
   75% { transform: translateX(-5px); }
   100% { transform: translateX(0); }
 }
+#secretZone {
+  position: fixed;
+  bottom: 6px;
+  right: 6px;
+  width: 44px;
+  height: 44px;
+  opacity: 0; /* totalmente invisível */
+  z-index: 9999;
+  touch-action: manipulation;
+}
+@media (hover: hover) {
+  /* opcional: deixa levemente visível em hover no desktop para você testar */
+  #secretZone:hover { outline: 2px solid rgba(212,175,55,0.08); }
+}
+
 
