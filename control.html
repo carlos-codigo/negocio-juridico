@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel de Controle</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+  <script defer src="firebase.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body class="painel">
+
+  <h2>Painel de Controle — Apresentador</h2>
+
+  <button onclick="sendCommand('start')">🔊 Iniciar Apresentação</button>
+  <button onclick="sendCommand('valid')">✅ Negócio Jurídico Válido</button>
+  <button onclick="sendCommand('invalid')">❌ Negócio Jurídico Inválido</button>
+  <button onclick="sendCommand('assinatura')">🖊 Assinatura do Contrato</button>
+  <button onclick="sendCommand('vicio')">⚠ Vício de Vontade</button>
+  <button onclick="sendCommand('encerrar')">🔚 Encerrar</button>
+  <button onclick="sendCommand('reset')">🔄 Voltar ao modo de espera</button>
+<button onclick="sendCommand('inicio')">inicio</button>
+
+</body>
+</html>
