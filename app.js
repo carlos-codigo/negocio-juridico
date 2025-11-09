@@ -1,102 +1,148 @@
-// Aguarda DOM carregar antes de executar qualquer coisa
+// Aguarda DOM pronto
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("✅ App iniciado, DOM carregado");
-
   const screen = document.getElementById("screen");
-  const sound = document.getElementById("sound");
+  const sound  = document.getElementById("sound");
 
-  if (!screen) {
-    console.error("❌ ERRO: elemento #screen não encontrado.");
-    return;
-  }
+  if (!screen) { console.error("screen não encontrado"); return; }
 
-  resetScreen(); // Sempre inicia modo de espera no carregamento
+  // Começa sempre em modo de espera
+  resetScreen();
 
-  // Escuta os comandos do Firebase
-  db.ref("command").on("value", snapshot => {
-    const cmd = snapshot.val();
-    if (!cmd) return;
-    console.log("📡 Comando recebido:", cmd);
-    handleCommand(cmd);
+  // Ouve Firebase (aceita string antiga ou objeto novo)
+  db.ref("command").on("value", snap => {
+    const val = snap.val();
+    if (!val) return;
+
+    if (typeof val === "string") {
+      handleCommand(val, {});
+    } else if (val && typeof val === "object" && val.cmd) {
+      handleCommand(val.cmd, val);
+    }
   });
 
-  function handleCommand(cmd) {
-    switch(cmd) {
+  function handleCommand(cmd, data){
+    switch(cmd){
       case "start":
-        updateScreen("🔊 APRESENTAÇÃO INICIADA", "#111");
-        play("start.mp3");
+        updateBig("🔊 APRESENTAÇÃO INICIADA");
+        play("assets/sounds/start.mp3");
+        break;
+
+      case "case":
+        showCase(data.title || "Caso", data.text || "");
+        break;
+
+      case "hint":
+        showOverlay("💡 Dica", data.text || "", 5000);
+        break;
+
+      case "law":
+        showOverlay("📜 Fundamento legal", data.text || "", 7000);
+        break;
+
+      case "suspense":
+        // usa batimento/tensão como suspense
+        showOverlay("🎭 Suspense", "Reflitam antes de responder…", 3000);
+        play("assets/sounds/coracao.mp3");
         break;
 
       case "valid":
-        updateScreen("✅ NEGÓCIO JURÍDICO VÁLIDO", "#0a4");
-        play("valido.mp3");
+        feedback("✅ LÍCITO", "#0a4");
+        play("assets/sounds/valido.mp3");
         break;
 
       case "invalid":
-        updateScreen("❌ NEGÓCIO JURÍDICO INVÁLIDO", "#a00");
-        play("erro.mp3");
+        feedback("❌ ILÍCITO", "#a00");
+        play("assets/sounds/erro.mp3");
         break;
 
       case "assinatura":
-        updateScreen("🖊 CONTRATO ASSINADO", "#111");
-        play("assinatura.mp3");
+        showOverlay("🖊 Assinatura", "Formalização do negócio jurídico.", 2500);
+        play("assets/sounds/assinatura.mp3");
         break;
 
       case "vicio":
-        updateScreen("⚠ VÍCIO DE VONTADE DETECTADO", "#550");
-        play("coracao.mp3");
-        blink();
-        break;
-
-      case "encerrar":
-        updateScreen("🔚 APRESENTAÇÃO ENCERRADA", "#000");
-        play("final.mp3");
-        break;
-
-        case "inicio":
-        updateScreen("⚖ NEGÓCIO JURÍDICO INTERATIVO", "#000");
-        play("inicio.mp3");
+        feedback("⚠ VÍCIO DE VONTADE", "#775500", true);
+        play("assets/sounds/coracao.mp3");
         break;
 
       case "reset":
         resetScreen();
         break;
+
+      case "encerrar":
+        updateBig("🔚 APRESENTAÇÃO ENCERRADA");
+        play("assets/sounds/final.mp3");
+        break;
     }
   }
 
-  function updateScreen(text, color) {
-    screen.style.background = color;
+  // ===== UI helpers =====
+  function resetScreen(){
+    screen.style.background = "#000";
     screen.style.animation = "none";
-    screen.innerHTML = `<h1>${text}</h1>`;
+    screen.innerHTML = `
+      <div class="content pulse glow">
+        <h1>⚖ NEGÓCIO JURÍDICO INTERATIVO</h1>
+        <p>Aguardando o apresentador iniciar...</p>
+      </div>
+    `;
   }
 
-  function blink() {
-    screen.style.animation = "blink 0.2s infinite";
+  function updateBig(text){
+    screen.style.background = "#111";
+    screen.style.animation = "none";
+    screen.innerHTML = `<div class="content"><h1>${text}</h1></div>`;
   }
 
-  function play(file) {
+  function showCase(title, text){
+    screen.style.background = "#0b0b0b";
+    screen.style.animation = "none";
+    screen.innerHTML = `
+      <div class="content" style="gap:12px">
+        <h1>${title}</h1>
+        <p style="max-width:900px; line-height:1.6; font-size:1.1rem">${escapeHtml(text)}</p>
+      </div>
+    `;
+  }
+
+  function feedback(text, color, blink=false){
+    screen.style.background = color;
+    screen.innerHTML = `<div class="content"><h1>${text}</h1></div>`;
+    screen.style.animation = blink ? "blink .22s infinite" : "none";
+  }
+
+  function showOverlay(title, body, ms=4000){
+    const wrap = document.createElement("div");
+    wrap.style.position = "fixed";
+    wrap.style.left = "50%";
+    wrap.style.top = "8%";
+    wrap.style.transform = "translateX(-50%)";
+    wrap.style.zIndex = "9999";
+    wrap.style.background = "rgba(15,23,42,.92)";
+    wrap.style.color = "#fef3c7";
+    wrap.style.border = "1px solid #d4af37";
+    wrap.style.borderRadius = "12px";
+    wrap.style.padding = "14px 16px";
+    wrap.style.maxWidth = "92vw";
+    wrap.style.boxShadow = "0 10px 28px rgba(0,0,0,.45)";
+    wrap.innerHTML = `
+      <div style="font-weight:700; margin-bottom:6px">${title}</div>
+      <div style="opacity:.95">${escapeHtml(body)}</div>
+    `;
+    document.body.appendChild(wrap);
+    setTimeout(()=> wrap.remove(), ms);
+  }
+
+  function play(file){
     if (!sound) return;
     sound.src = file;
-    sound.play().catch(err => console.warn("🔇 Falha ao tocar som:", err));
+    sound.play().catch(()=>{ /* silencioso */ });
   }
 
+  function escapeHtml(s){
+    return (s||"").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
 });
 
-// ======== FUNÇÃO DO PAINEL =========
-function sendCommand(cmd) {
-  db.ref("command").set(cmd);
-}
-
-// ======== TELA INICIAL / RESET =========
-function resetScreen() {
-  const screen = document.getElementById("screen");
-  screen.style.background = "#000";
-  screen.style.animation = "none";
-  screen.innerHTML = `
-    <div class="content pulse glow">
-      <h1>⚖ NEGÓCIO JURÍDICO INTERATIVO</h1>
-      <p>Aguardando o apresentador iniciar...</p>
-    </div>
-  `;
-}
-
+// ===== Painel legado (botões antigos ainda funcionam) =====
+function sendCommand(cmd){ db.ref("command").set(cmd); }
