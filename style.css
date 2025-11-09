@@ -50,3 +50,71 @@ button:hover {
 .pulse {
   animation: pulse 1s ease-in-out infinite;
 }
+/* Tela de login */
+body.login {
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: gold;
+  font-family: "Poppins", sans-serif;
+}
+
+.login-box {
+  text-align: center;
+  border: 2px solid gold;
+  padding: 35px;
+  border-radius: 10px;
+  width: 300px;
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+}
+
+.login-box input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 15px;
+  border: none;
+  outline: none;
+  background: #111;
+  color: gold;
+  border-bottom: 2px solid gold;
+  font-size: 18px;
+}
+
+.login-box button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px;
+  background: gold;
+  color: black;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-box button:hover {
+  background: #ffcf2b;
+}
+
+.erro {
+  color: red;
+  margin-top: 10px;
+  opacity: 0;
+  transition: 0.3s;
+}
+
+/* Efeito tremer */
+.shake {
+  animation: shake 0.3s;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
