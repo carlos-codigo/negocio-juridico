@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       case "vicio":
         feedback("⚠ VÍCIO DE VONTADE", "#775500", true);
-        play("coracao.mp3");
+        play("sirene.mp3.mp3");
         break;
 
       case "reset":
@@ -151,6 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ===== Painel legado (botões antigos ainda funcionam) =====
 function sendCommand(cmd){ db.ref("command").set(cmd); }
+
 
 
 
