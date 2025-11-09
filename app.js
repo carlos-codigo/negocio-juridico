@@ -24,38 +24,38 @@ document.addEventListener("DOMContentLoaded", () => {
     switch(cmd) {
       case "start":
         updateScreen("🔊 APRESENTAÇÃO INICIADA", "#111");
-        play("assets/sounds/start.mp3");
+        play("start.mp3");
         break;
 
       case "valid":
         updateScreen("✅ NEGÓCIO JURÍDICO VÁLIDO", "#0a4");
-        play("assets/sounds/valido.mp3");
+        play("valido.mp3");
         break;
 
       case "invalid":
         updateScreen("❌ NEGÓCIO JURÍDICO INVÁLIDO", "#a00");
-        play("assets/sounds/erro.mp3");
+        play("erro.mp3");
         break;
 
       case "assinatura":
         updateScreen("🖊 CONTRATO ASSINADO", "#111");
-        play("assets/sounds/assinatura.mp3");
+        play("assinatura.mp3");
         break;
 
       case "vicio":
         updateScreen("⚠ VÍCIO DE VONTADE DETECTADO", "#550");
-        play("assets/sounds/coracao.mp3");
+        play("coracao.mp3");
         blink();
         break;
 
       case "encerrar":
         updateScreen("🔚 APRESENTAÇÃO ENCERRADA", "#000");
-        play("assets/sounds/final.mp3");
+        play("final.mp3");
         break;
 
         case "inicio":
         updateScreen("⚖ NEGÓCIO JURÍDICO INTERATIVO", "#000");
-        play("assets/sounds/inicio.mp3");
+        play("inicio.mp3");
         break;
 
       case "reset":
@@ -99,3 +99,4 @@ function resetScreen() {
     </div>
   `;
 }
+
