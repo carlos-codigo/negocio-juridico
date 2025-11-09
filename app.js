@@ -73,13 +73,13 @@ document.addEventListener("DOMContentLoaded", () => {
         updateBig("🔚 APRESENTAÇÃO ENCERRADA");
         play("final.mp3");
         break;
-    }
+        
      case "mute":
-        updateBig("🔚 APRESENTAÇÃO ENCERRADA");
+        updateBig("mudo");
         play("mute.mp3");
         break;
     }
-  }
+  
 
   // ===== UI helpers =====
   function resetScreen(){
@@ -151,5 +151,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ===== Painel legado (botões antigos ainda funcionam) =====
 function sendCommand(cmd){ db.ref("command").set(cmd); }
+
 
 
