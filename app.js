@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     switch(cmd){
       case "start":
         updateBig("🔊 APRESENTAÇÃO INICIADA");
-        play("assets/sounds/start.mp3");
+        play("start.mp3");
         break;
 
       case "case":
@@ -42,27 +42,27 @@ document.addEventListener("DOMContentLoaded", () => {
       case "suspense":
         // usa batimento/tensão como suspense
         showOverlay("🎭 Suspense", "Reflitam antes de responder…", 3000);
-        play("assets/sounds/coracao.mp3");
+        play("coracao.mp3");
         break;
 
       case "valid":
         feedback("✅ LÍCITO", "#0a4");
-        play("assets/sounds/valido.mp3");
+        play("valido.mp3");
         break;
 
       case "invalid":
         feedback("❌ ILÍCITO", "#a00");
-        play("assets/sounds/erro.mp3");
+        play("erro.mp3");
         break;
 
       case "assinatura":
         showOverlay("🖊 Assinatura", "Formalização do negócio jurídico.", 2500);
-        play("assets/sounds/assinatura.mp3");
+        play("assinatura.mp3");
         break;
 
       case "vicio":
         feedback("⚠ VÍCIO DE VONTADE", "#775500", true);
-        play("assets/sounds/coracao.mp3");
+        play("coracao.mp3");
         break;
 
       case "reset":
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       case "encerrar":
         updateBig("🔚 APRESENTAÇÃO ENCERRADA");
-        play("assets/sounds/final.mp3");
+        play("final.mp3");
         break;
     }
   }
@@ -146,3 +146,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ===== Painel legado (botões antigos ainda funcionam) =====
 function sendCommand(cmd){ db.ref("command").set(cmd); }
+
