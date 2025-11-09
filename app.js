@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
         break;
         
      case "mudo":
-        feedback("mudo");
+    
         play("mudo.mp3");
         break;
     }
@@ -151,6 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ===== Painel legado (botões antigos ainda funcionam) =====
 function sendCommand(cmd){ db.ref("command").set(cmd); }
+
 
 
 
