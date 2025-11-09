@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Começa sempre em modo de espera
   resetScreen();
-  
 
   // Ouve Firebase (aceita string antiga ou objeto novo)
   db.ref("command").on("value", snap => {
@@ -25,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     switch(cmd){
       case "start":
         updateBig("🔊 APRESENTAÇÃO INICIADA");
-        play("start.mp3");
+        play("assets/sounds/start.mp3");
         break;
 
       case "case":
@@ -43,27 +42,27 @@ document.addEventListener("DOMContentLoaded", () => {
       case "suspense":
         // usa batimento/tensão como suspense
         showOverlay("🎭 Suspense", "Reflitam antes de responder…", 3000);
-        play("coracao.mp3");
+        play("assets/sounds/coracao.mp3");
         break;
 
       case "valid":
         feedback("✅ LÍCITO", "#0a4");
-        play("valido.mp3");
+        play("assets/sounds/valido.mp3");
         break;
 
       case "invalid":
         feedback("❌ ILÍCITO", "#a00");
-        play("erro.mp3");
+        play("assets/sounds/erro.mp3");
         break;
 
       case "assinatura":
         showOverlay("🖊 Assinatura", "Formalização do negócio jurídico.", 2500);
-        play("assinatura.mp3");
+        play("assets/sounds/assinatura.mp3");
         break;
 
       case "vicio":
         feedback("⚠ VÍCIO DE VONTADE", "#775500", true);
-        play("sirene.mp3.mp3");
+        play("assets/sounds/coracao.mp3");
         break;
 
       case "reset":
@@ -72,15 +71,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       case "encerrar":
         updateBig("🔚 APRESENTAÇÃO ENCERRADA");
-        play("final.mp3");
-        break;
-        
-      case "mudo":
-        feedback("mudo");
-        play("mudo.mp3");
+        play("assets/sounds/final.mp3");
         break;
     }
-  
+  }
 
   // ===== UI helpers =====
   function resetScreen(){
@@ -152,15 +146,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ===== Painel legado (botões antigos ainda funcionam) =====
 function sendCommand(cmd){ db.ref("command").set(cmd); }
-
-
-
-
-
-
-
-
-
-
-
-
