@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+<!DOCTYPE html><!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Negócio Jurídico Interativo</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 
   <!-- Firebase CDN -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -13,12 +13,30 @@
   <!-- Scripts do projeto -->
   <script src="firebase.js"></script>
   <script src="app.js"></script>
+
+  <!-- Estilo do botão do painel (inline p/ não depender do seu style.css) -->
+  <style>
+    #adminBtn{
+      position: fixed;
+      right: 16px; bottom: 16px;
+      background: #d4af37; color: #000;
+      border: none; border-radius: 10px;
+      padding: 10px 14px; font-weight: 700;
+      box-shadow: 0 6px 16px rgba(0,0,0,.35);
+      cursor: pointer; opacity: .92;
+      transition: transform .15s ease, opacity .15s ease, box-shadow .15s ease;
+      z-index: 9999;
+    }
+    #adminBtn:hover{ opacity: 1; transform: translateY(-1px); box-shadow: 0 10px 24px rgba(0,0,0,.45); }
+    #adminBtn:active{ transform: translateY(0); }
+    @media (max-width: 420px){ #adminBtn{ padding: 9px 12px; font-size: 14px; } }
+  </style>
 </head>
 <body>
 
   <div id="screen" class="waiting">
     <div class="content">
-      <h1 id="secretAccess" style="cursor:pointer;">⚖ NEGÓCIO JURÍDICO INTERATIVO</h1>
+      <h1>⚖ NEGÓCIO JURÍDICO INTERATIVO</h1>
       <p class="pulse">Aguardando o apresentador iniciar...</p>
     </div>
   </div>
@@ -26,12 +44,17 @@
   <!-- Áudio geral da apresentação -->
   <audio id="sound" preload="auto"></audio>
 
-  <!-- Acesso ao painel: clique no título -->
+  <!-- Botão visível para acessar o painel -->
+  <button id="adminBtn" aria-label="Abrir painel de controle">Painel</button>
+
   <script>
-    document.getElementById("secretAccess").addEventListener("click", () => {
-      window.location.href = "login.html";
+    // Abre a tela de login; após senha correta, redireciona para control.html
+    document.getElementById('adminBtn').addEventListener('click', () => {
+      window.location.href = 'login.html';
     });
   </script>
 
 </body>
 </html>
+
+
