@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
      case "mute":
         updateBig("mudo");
-        play("mute.mp3");
+        play("videoplayback (1).mp4");
         break;
     }
   
@@ -151,6 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ===== Painel legado (botões antigos ainda funcionam) =====
 function sendCommand(cmd){ db.ref("command").set(cmd); }
+
 
 
 
