@@ -3,27 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Negócio Jurídico Interativo</title>
+  <title>Acesso Restrito</title>
   <link rel="stylesheet" href="style.css">
-
-  <!-- Firebase CDN -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
-  <!-- Scripts do projeto -->
-  <script src="firebase.js"></script>
-  <script src="app.js"></script>
+  <script defer src="login.js"></script>
 </head>
-<body>
+<body class="login">
 
-  <div id="screen" class="waiting">
-    <div class="content">
-      <h1>⚖ NEGÓCIO JURÍDICO INTERATIVO</h1>
-      <p>Aguardando o apresentador iniciar...</p>
-    </div>
+  <div class="login-box">
+    <h1>🔐 Acesso ao Painel</h1>
+    <p>Digite a senha para continuar</p>
+
+    <input type="password" id="senha" placeholder="Senha" autofocus>
+    <button onclick="login()">Entrar</button>
+
+    <p id="erro" class="erro"></p>
   </div>
-
-  <audio id="sound" preload="auto"></audio>
 
 </body>
 </html>
