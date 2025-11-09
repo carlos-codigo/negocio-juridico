@@ -54,55 +54,21 @@
 </script>
 
   <!-- Acesso secreto ao painel (3 cliques no ícone ⚖️) -->
-  <script>
+ <script>
   (function(){
-    let clicks = 0;
-    let timeout;
-    const secret = document.getElementById("secretAccess");
-
-    // cria feedback discreto
-    const fb = document.createElement("div");
-    fb.id = "secretFeedback";
-    fb.style.position = "absolute";
-    fb.style.top = "18%";
-    fb.style.right = "6%";
-    fb.style.color = "rgba(212,175,55,0.0)";
-    fb.style.fontSize = "18px";
-    fb.style.transition = "color .25s";
-    fb.style.pointerEvents = "none";
-    fb.innerText = "• • •";
-    document.body.appendChild(fb);
-
-    function showFeedback() {
-      fb.style.color = "rgba(212,175,55,0.95)";
-      setTimeout(()=> fb.style.color = "rgba(212,175,55,0.0)", 600);
-    }
-
-    function trigger() {
+    const zone = document.createElement("div");
+    zone.id = "secretZone";
+    document.body.appendChild(zone);
+    zone.addEventListener("click", ()=> {
       window.location.href = "login.html";
-    }
-
-    function doClick() {
-      clicks++;
-      showFeedback();
-      if (clicks === 3) {
-        trigger();
-        clicks = 0;
-        clearTimeout(timeout);
-        return;
-      }
-      clearTimeout(timeout);
-      timeout = setTimeout(()=> clicks = 0, 900); // tempo para reset
-    }
-
-    // suporta mouse e toque
-    secret.addEventListener("click", doClick);
-    secret.addEventListener("touchend", (e) => { e.preventDefault(); doClick(); }, {passive:false});
+    });
   })();
 </script>
 
 
+
 </body>
 </html>
+
 
 
