@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Começa sempre em modo de espera
   resetScreen();
+  
 
   // Ouve Firebase (aceita string antiga ou objeto novo)
   db.ref("command").on("value", snap => {
@@ -151,6 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ===== Painel legado (botões antigos ainda funcionam) =====
 function sendCommand(cmd){ db.ref("command").set(cmd); }
+
 
 
 
